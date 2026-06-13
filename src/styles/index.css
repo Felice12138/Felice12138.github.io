@@ -1,0 +1,756 @@
+/* ============================================================
+   DESIGN TOKENS — Gothic × Luxury Editorial
+   ============================================================ */
+:root {
+  /* Color Palette */
+  --bg:           #F5F0E8;   /* White Swan parchment */
+  --fg:           #2C2C2C;   /* Black Onyx charcoal  */
+  --muted-bg:     #EAE0D5;   /* Deeper parchment     */
+  --muted-fg:     #7A6E64;   /* Warm grey            */
+  --accent:       #B84040;   /* Bittersweet rust-red (luxury gold role) */
+  --accent-dark:  #8B2E2E;   /* Deeper rust          */
+  --jade:         #A8C4B8;   /* Misty Jade           */
+  --coral:        #F08060;   /* Living Coral         */
+  --frame:        #6B3A2A;   /* Burnt Sienna border  */
+  --dark:         #1C1210;   /* Near-black warm      */
+  --dark-muted:   rgba(245, 240, 232, 0.65);
+
+  /* Typography */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans:  'Inter', system-ui, sans-serif;
+  --font-mono:  'JetBrains Mono', 'Courier New', monospace;
+
+  /* Transitions */
+  --t-fast:       300ms ease-out;
+  --t-med:        500ms ease-out;
+  --t-slow:       700ms ease-out;
+  --t-cinematic:  1500ms ease-out;
+  --ease-luxury:  cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Frame */
+  --frame-w: 14px;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.625;
+  color: var(--fg);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100svh;
+}
+
+/* ============================================================
+   NOISE OVERLAY — Paper grain texture
+   ============================================================ */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ============================================================
+   PAGE FRAME — Dark brown outer border
+   ============================================================ */
+.page-frame {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  border: var(--frame-w) solid var(--frame);
+  box-shadow:
+    inset 0 0 0 1px rgba(107, 58, 42, 0.3),
+    inset 0 0 40px rgba(107, 58, 42, 0.08);
+}
+
+/* ============================================================
+   GRID LINES — Vertical editorial lines
+   ============================================================ */
+.grid-lines {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  display: none;
+}
+@media (min-width: 1024px) {
+  .grid-lines { display: block; }
+}
+.grid-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: rgba(44, 44, 44, 0.1);
+}
+.grid-line:nth-child(1) { left: 16.66%; }
+.grid-line:nth-child(2) { left: 33.33%; }
+.grid-line:nth-child(3) { left: 66.66%; }
+.grid-line:nth-child(4) { left: 83.33%; }
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar {
+  position: fixed;
+  top: var(--frame-w);
+  right: var(--frame-w);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  padding: 1.25rem 2rem;
+  background: transparent;
+}
+
+.navbar__link {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--fg);
+  transition: color var(--t-slow);
+  position: relative;
+}
+.navbar__link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width var(--t-med) var(--ease-luxury);
+}
+.navbar__link:hover { color: var(--accent); }
+.navbar__link:hover::after { width: 100%; }
+.navbar__link.active { color: var(--accent); }
+.navbar__link.active::after { width: 100%; }
+
+/* ============================================================
+   BUTTON
+   ============================================================ */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: 48px;
+  padding: 0 2.5rem;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: box-shadow var(--t-med);
+}
+
+.btn--primary {
+  background: var(--fg);
+  color: #F5F0E8;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+.btn--primary:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+.btn--primary .btn__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: translateX(-101%);
+  transition: transform 500ms var(--ease-luxury);
+  z-index: 0;
+}
+.btn--primary:hover .btn__overlay { transform: translateX(0); }
+.btn--primary .btn__label {
+  position: relative;
+  z-index: 1;
+}
+
+.btn--secondary {
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--fg);
+  transition: background var(--t-med), color var(--t-med), box-shadow var(--t-med);
+}
+.btn--secondary:hover {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  transition: background var(--t-med), color var(--t-med);
+}
+.btn--ghost:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ============================================================
+   DIVIDER / OVERLINE
+   ============================================================ */
+.overline {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted-fg);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.overline::before {
+  content: '';
+  display: block;
+  width: 2rem;
+  height: 1px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.h-rule {
+  width: 100%;
+  height: 1px;
+  background: rgba(44, 44, 44, 0.12);
+  border: none;
+}
+
+/* ============================================================
+   HERALDIC CREST — Decorative SVG placeholder
+   ============================================================ */
+.crest {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+/* ============================================================
+   VERTICAL TEXT LABEL (editorial side label)
+   ============================================================ */
+.vert-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted-fg);
+  user-select: none;
+}
+
+/* ============================================================
+   TERMINAL BLOCK
+   ============================================================ */
+.terminal {
+  background: #1A1110;
+  border: 1px solid rgba(184, 64, 64, 0.25);
+  padding: 1.75rem 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.85;
+  color: #D4956A;
+  position: relative;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.2),
+    inset 0 0 0 1px rgba(184,64,64,0.1);
+}
+.terminal::before {
+  content: '● ● ●';
+  display: block;
+  color: rgba(212, 149, 106, 0.35);
+  font-size: 0.55rem;
+  letter-spacing: 0.4em;
+  margin-bottom: 1rem;
+}
+.terminal .cmd { color: var(--coral); }
+.terminal .res { color: #D4956A; opacity: 0.85; }
+.terminal .quote {
+  color: var(--jade);
+  opacity: 0.9;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* ============================================================
+   DROP CAP
+   ============================================================ */
+.drop-cap::first-letter {
+  font-family: var(--font-serif);
+  font-size: 4.5rem;
+  font-weight: 400;
+  line-height: 0.8;
+  float: left;
+  margin-right: 0.2em;
+  margin-top: 0.05em;
+  color: var(--accent);
+}
+
+/* ============================================================
+   MANUSCRIPT FRAME (About page)
+   ============================================================ */
+.manuscript-frame {
+  border: 1px solid rgba(107, 58, 42, 0.4);
+  box-shadow:
+    0 0 0 6px var(--muted-bg),
+    0 0 0 7px rgba(107, 58, 42, 0.2),
+    0 8px 48px rgba(0,0,0,0.1);
+  background: #FAF6EE;
+  position: relative;
+}
+.manuscript-frame::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(107, 58, 42, 0.15);
+  pointer-events: none;
+}
+
+/* ============================================================
+   VINTAGE TV (Works page)
+   ============================================================ */
+.vintage-tv {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+.tv-body {
+  background: linear-gradient(145deg, #3a3028 0%, #2a2018 100%);
+  border-radius: 12px 12px 16px 16px;
+  padding: 20px 20px 40px;
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 0 0 2px rgba(0,0,0,0.3);
+  position: relative;
+}
+.tv-screen-outer {
+  background: #0a0a0a;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+}
+.tv-screen {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #0f1a14 0%, #0a1510 50%, #0f1a14 100%);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.tv-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(168, 196, 184, 0.03) 2px,
+    rgba(168, 196, 184, 0.03) 4px
+  );
+}
+.tv-screen-text {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--jade);
+  opacity: 0.7;
+  text-align: center;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  z-index: 1;
+  position: relative;
+}
+.tv-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding: 0 4px;
+}
+.tv-knob {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #6b5a4a, #2a2018);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.tv-knob-group {
+  display: flex;
+  gap: 10px;
+}
+.tv-brand {
+  font-family: var(--font-serif);
+  font-size: 0.55rem;
+  font-style: italic;
+  color: rgba(212, 149, 106, 0.5);
+  letter-spacing: 0.15em;
+}
+.tv-leg {
+  width: 28%;
+  height: 24px;
+  background: linear-gradient(to bottom, #2a2018, #1a1410);
+  position: relative;
+  border-radius: 0 0 4px 4px;
+}
+.tv-legs {
+  display: flex;
+  justify-content: space-around;
+  padding: 0 20px;
+}
+
+/* ============================================================
+   GOTHIC SPIRE — CSS illustration
+   ============================================================ */
+.gothic-spire {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0.12;
+  user-select: none;
+  pointer-events: none;
+}
+.spire-tip {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 60px solid var(--fg);
+}
+.spire-body {
+  width: 40px;
+  height: 80px;
+  background: var(--fg);
+  position: relative;
+  clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+}
+.spire-tower {
+  width: 60px;
+  height: 100px;
+  background: linear-gradient(to bottom, var(--fg), rgba(44,44,44,0.7));
+  position: relative;
+}
+.spire-tower::before,
+.spire-tower::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 18px;
+  height: 60px;
+  background: inherit;
+}
+.spire-tower::before { left: -14px; }
+.spire-tower::after  { right: -14px; }
+.spire-base {
+  width: 90px;
+  height: 30px;
+  background: var(--fg);
+  opacity: 0.6;
+}
+
+/* ============================================================
+   CONTACT AVATAR FRAME
+   ============================================================ */
+.avatar-frame {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px solid rgba(107, 58, 42, 0.4);
+  box-shadow:
+    0 0 0 6px var(--muted-bg),
+    0 0 0 7px rgba(107, 58, 42, 0.2),
+    0 4px 24px rgba(0,0,0,0.1);
+  background: linear-gradient(135deg, var(--muted-bg) 0%, #E0D5C5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-style: italic;
+  position: relative;
+}
+.avatar-frame::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 1px solid rgba(107, 58, 42, 0.15);
+}
+
+/* ============================================================
+   CONTACT LINKS
+   ============================================================ */
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(44, 44, 44, 0.1);
+  text-decoration: none;
+  color: var(--fg);
+  transition: color var(--t-slow), padding-left var(--t-med) var(--ease-luxury);
+  cursor: pointer;
+}
+.contact-link:hover {
+  color: var(--accent);
+  padding-left: 0.5rem;
+}
+.contact-link__icon {
+  font-size: 0.75rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted-fg);
+  width: 6rem;
+  flex-shrink: 0;
+  transition: color var(--t-slow);
+}
+.contact-link:hover .contact-link__icon { color: var(--accent); }
+.contact-link__text {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+/* ============================================================
+   WORKS / PROJECT LIST
+   ============================================================ */
+.project-item {
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(44, 44, 44, 0.12);
+  transition: padding-left var(--t-med) var(--ease-luxury);
+  cursor: pointer;
+}
+.project-item:hover { padding-left: 0.75rem; }
+.project-item__num {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.35rem;
+}
+.project-item__title {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--fg);
+  margin-bottom: 0.4rem;
+  transition: color var(--t-slow);
+}
+.project-item:hover .project-item__title { color: var(--accent); }
+.project-item__desc {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--muted-fg);
+  line-height: 1.6;
+  max-width: 42ch;
+}
+.project-item__tag {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.6rem;
+  font-family: var(--font-sans);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--jade);
+  border: 1px solid rgba(168, 196, 184, 0.5);
+  padding: 0.2rem 0.6rem;
+}
+
+/* ============================================================
+   DARK SECTION
+   ============================================================ */
+.section--dark {
+  background: var(--dark);
+  color: var(--bg);
+}
+.section--dark .overline { color: var(--dark-muted); }
+.section--dark .h-rule { background: rgba(245,240,232,0.1); }
+.section--dark p { color: var(--dark-muted); }
+
+/* ============================================================
+   PAGE CONTENT WRAPPER
+   ============================================================ */
+.page-content {
+  padding: calc(var(--frame-w) + 4rem) calc(var(--frame-w) + 2rem) calc(var(--frame-w) + 4rem);
+  min-height: 100svh;
+}
+
+@media (min-width: 768px) {
+  .page-content {
+    padding: calc(var(--frame-w) + 5rem) calc(var(--frame-w) + 4rem) calc(var(--frame-w) + 5rem);
+  }
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes terminalBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.anim-fade-up {
+  animation: fadeUp 800ms var(--ease-luxury) both;
+}
+.anim-fade-up:nth-child(2) { animation-delay: 150ms; }
+.anim-fade-up:nth-child(3) { animation-delay: 300ms; }
+.anim-fade-up:nth-child(4) { animation-delay: 450ms; }
+.anim-fade-up:nth-child(5) { animation-delay: 600ms; }
+.anim-fade-up:nth-child(6) { animation-delay: 750ms; }
+
+.anim-fade-in {
+  animation: fadeIn 1000ms var(--ease-luxury) both;
+}
+
+/* ============================================================
+   FLORAL DECORATION — CSS ornamental corners
+   ============================================================ */
+.floral-corner {
+  position: absolute;
+  color: rgba(184, 64, 64, 0.18);
+  font-size: 5rem;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.floral-corner--tl { top: 1.5rem; left: 1.5rem; }
+.floral-corner--tr { top: 1.5rem; right: 1.5rem; transform: scaleX(-1); }
+.floral-corner--bl { bottom: 1.5rem; left: 1.5rem; transform: scaleY(-1); }
+.floral-corner--br { bottom: 1.5rem; right: 1.5rem; transform: scale(-1); }
+
+/* Decorative border ornament */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--accent);
+  opacity: 0.5;
+}
+.ornament::before,
+.ornament::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.4;
+}
+.ornament__symbol {
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   TYPOGRAPHY UTILITIES
+   ============================================================ */
+.display-xl {
+  font-family: var(--font-serif);
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+.display-lg {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+.display-md {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--fg);
+}
+.text-italic-accent {
+  font-style: italic;
+  color: var(--accent);
+}
+.body-text {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--muted-fg);
+  max-width: 56ch;
+}
+
+/* Watermark logo */
+.logo-watermark {
+  font-family: var(--font-serif);
+  font-size: clamp(8rem, 22vw, 18rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--fg);
+  opacity: 0.04;
+  user-select: none;
+  pointer-events: none;
+  position: absolute;
+  top: -0.15em;
+  left: -0.05em;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
